@@ -1,0 +1,29 @@
+version: '2.1'
+
+services:
+  web:
+    build: .
+    restart: on-failure
+    env_file:
+      - db_keys.env
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    command: bash -c "python manage.py makemigrations"
+    command: bash -c "python manage.py migrate"
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+
+  db:
+    image: postgis/postgis:latest
+    restart: on-failure
+    volumes:
+      - /usr/local/var/postgres:/var/lib/postgres/data/pgdata
+    env_file:
+      - db_keys.env
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
