@@ -14,7 +14,7 @@ For getting access to authorized only/author only use Postman/frontend client pr
 <br>
 /api//token/ - Obtaining token for authorization(via Postman/frontend client providing "email" "password" in body)<br>
 <br>
-/api/v1/users/?lat=your_latitude&lng=your_langetude - User List for all (only first 25 users with 10 km distance from you)<br>
+/api/v1/users/?lat=your_latitude&lng=your_langetude - User List for all (only first 25 users with 10 km distance from you as standart)<br>
 <br>
 /api/v1/users/view_account/id/?lat=your_latitude&lng=your_longitude - User retrive for authorized only<br>
 <br>
