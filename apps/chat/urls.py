@@ -1,5 +1,6 @@
 from rest_framework import routers
-from .views import ChatViewSet, MessageListCreateViewSet, MessageUpdatingViewSet
+
+from chat.views import ChatViewSet, MessageListCreateViewSet, MessageUpdatingViewSet
 
 
 router = routers.DefaultRouter()

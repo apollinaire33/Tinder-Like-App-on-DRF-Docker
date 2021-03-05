@@ -3,12 +3,17 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.db.models.signals import m2m_changed
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
+from rest_framework import status
+from rest_framework.response import Response
+
+from user.enums import Subscription
 
 
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, name, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            content = {'error': 'Users must have an email address'}
+            return Response(content, status=status.HTTP_409_CONFLICT)
         
         email = self.normalize_email(email)
         user = self.model(email=email, name=name)
@@ -29,11 +34,6 @@ class UserAccountManager(BaseUserManager):
 
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
-    class Subscription(models.TextChoices):
-        BASE = "20 swipes per day, 10 km"
-        VIP = "100 swipes per day, 25 km"
-        PREMIUM = "unlimited swipes, dynamic km"
-
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True, default='')

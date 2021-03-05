@@ -1,4 +1,6 @@
 from django.contrib import admin
-from .models import UserAccount
+
+from user.models import UserAccount
+
 
 admin.site.register(UserAccount)

@@ -3,6 +3,7 @@ from django.db.models.signals import m2m_changed
 from django.utils.timezone import now
 from django.dispatch import receiver
 from django.core.exceptions import SuspiciousOperation
+
 from user.models import UserAccount
 
 
@@ -39,14 +40,16 @@ def create_chat(sender, instance, action, **kwargs):
                 Chat.objects.filter(id=instance.id).delete()
 
 
-class Messages(models.Model):
-    user = models.ForeignKey(UserAccount, on_delete=models.SET_NULL, to_field='email', related_name='messages_by_user', null=True)
+class Message(models.Model):
+    user = models.ForeignKey(UserAccount, on_delete=models.SET_NULL, to_field='email',
+                             related_name='messages_by_user', null=True)
     text = models.TextField()
     date = models.DateTimeField(default=now, blank=True)
-    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, to_field='id', related_name='messages_in_chat')
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, to_field='id',
+                             related_name='messages_in_chat')
     
     def __str__(self):
-        return self.text[0:13] + '...'
+        return f"{self.text[0:13]}..."
 
     # func for checking if message's author in chat
     def save(self, *args, **kwargs): 
